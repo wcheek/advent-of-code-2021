@@ -22,13 +22,26 @@ async function asyncReadFile(filename: string) {
 let count: number = 0;
 
 asyncReadFile("../assets/prob1_input.txt")
-  .then((result) => result.split(/\s+/))
+  .then((result) => result.split(/\s+/).map(Number))
   .then((result) => {
-    result.slice(1,).forEach((value, ind, a) => {
-      // console.log(value, result[ind])
-      if (value > result[ind]) {
-        count = count + 1;
+    result.forEach((value: number, ind: number, a: number[]) => {
+      // console.log(a);
+      let val_prev = result
+        .slice(ind, ind + 3)
+        .reduce<number>((accumulator, current) => {
+          return accumulator + current;
+        }, 0);
+      let val = result
+        .slice(ind + 1, ind + 4)
+        .reduce<number>((accumulator, current) => {
+          return accumulator + current;
+        }, 0);
+      // console.log(val);
+      if (val > val_prev) {
+        count += 1;
       }
-    })
-    console.log(count)
+    });
+    console.log(count);
   });
+// part 1: Should be 1676
+// part 2: 1706
