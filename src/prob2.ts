@@ -28,30 +28,33 @@ class Position {
     this.x = x;
     this.y = y;
   }
-  moveForward(n: number) {
-    this.x += n;
+  moveForward(n: number): void {
+    this.x += n as number;
   }
-  moveVertically(n: number) {
-    this.y += n;
+  moveUp(n: number): void {
+    this.y = this.y + n;
+  }
+  moveDown(n: number): void {
+    this.y = this.y - n;
   }
 }
-let subPosition = new Position();
 
 instructions
   .then((result) => result.split("\n").map(String))
   .then((result) => {
+    let subPosition = new Position(0, 0);
     result.forEach((value: string, index: number, array: string[]) => {
       const [instruction, amount] = value.split(" ") as [string, number];
-    //   console.log(instruction, amount);
       if (instruction == "forward") {
         subPosition.moveForward(amount);
       } else if (instruction == "up") {
-        subPosition.moveVertically(amount);
+        subPosition.moveUp(amount);
       } else if (instruction == "down") {
-        subPosition.moveVertically(-1 * amount);
+        // console.log(amount)
+        subPosition.moveDown(amount);
       }
     });
+    console.log(subPosition.y);
   });
 
-console.log(subPosition)
-
+// console.log(subPosition)
