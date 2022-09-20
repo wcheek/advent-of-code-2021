@@ -14,17 +14,7 @@ async function asyncReadFile(filename: string) {
     return "Something went wrong";
   }
 }
-var getMax = function (str: string) {
-  var max = 0,
-    maxChar = "";
-  str.split("").forEach(function (char) {
-    if (str.split(char).length > max) {
-      max = str.split(char).length;
-      maxChar = char;
-    }
-  });
-  return maxChar;
-};
+
 let getMostCommon = function (str: string): string {
   let numZeros = (str.match(/0/g) || []).length;
   let numOnes = (str.match(/1/g) || []).length;
