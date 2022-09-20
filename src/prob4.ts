@@ -22,10 +22,10 @@ async function asyncReadFile(filename: string) {
   }
 }
 class bingoCard {
-  bingoArray: number[][];
+  numberArray: number[][];
   cardNumber: number;
-  constructor(bingoArray: number[][], cardNumber: number) {
-    this.bingoArray = bingoArray;
+  constructor(numberArray: number[][], cardNumber: number) {
+    this.numberArray = numberArray;
     this.cardNumber = cardNumber;
   }
 }
@@ -52,15 +52,7 @@ bingoCardsInput
     result.forEach((value: string, index: number, array: string[]) => {
       let numbers = getNumberRow(value);
       if (numbers.length != 1) {
-        // console.log(index)
-        // console.log(Math.floor(index / 6));
-        // console.log(numbers);
-        bingoCards[Math.floor(index / 6)].bingoArray[index % 6] = numbers;
-        // if (index < 16) {
-        //   console.log(index);
-        //   console.log(Math.floor(index / 6));
-        //   console.log(bingoCards.at(1));
-        // }
+        bingoCards[Math.floor(index / 6)].numberArray[index % 6] = numbers;
       }
     });
     console.log(bingoCards[99]);
