@@ -21,4 +21,33 @@ async function asyncReadFile(filename: string) {
     return "Something went wrong";
   }
 }
-let bingoCards = asyncReadFile("../assets/prob4_input.txt")
+class bingoCard {
+  bingoArray: number[][];
+  constructor(bingoArray: number[][]) {
+    this.bingoArray = bingoArray;
+  }
+}
+let bingoCards: bingoCard[] = Array(100).fill(new bingoCard([]));
+let bingoCardsInput = asyncReadFile("../assets/prob4_input.txt");
+
+let getNumberRow = function (value: string): number[] {
+  let newValue = value[0] == " " ? value.slice(1) : value;
+  let numbers: number[] = [];
+  let doubleSplit = newValue.split("  ");
+  doubleSplit.forEach((value) => {
+    numbers = [...numbers, ...value.split(" ").map(Number)];
+  });
+  return numbers;
+};
+bingoCardsInput
+  .then((result) => result.split("\n").map(String))
+  .then((result) => {
+    result.forEach((value: string, index: number, array: string[]) => {
+      let numbers = getNumberRow(value);
+      if (numbers.length != 1) {
+        console.log(Math.floor(index / 6));
+        bingoCards[Math.floor(index / 6)].bingoArray[index % 6] = numbers;
+      }
+    });
+    console.log(bingoCards[1]);
+  });
