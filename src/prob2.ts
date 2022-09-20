@@ -32,10 +32,10 @@ class Position {
     this.x += n as number;
   }
   moveUp(n: number): void {
-    this.y = this.y + n;
+    this.y -= n as number;
   }
   moveDown(n: number): void {
-    this.y = this.y - n;
+    this.y += n as number;
   }
 }
 
@@ -46,15 +46,18 @@ instructions
     result.forEach((value: string, index: number, array: string[]) => {
       const [instruction, amount] = value.split(" ") as [string, number];
       if (instruction == "forward") {
-        subPosition.moveForward(amount);
+        subPosition.moveForward(+amount);
       } else if (instruction == "up") {
-        subPosition.moveUp(amount);
+        subPosition.moveUp(+amount);
       } else if (instruction == "down") {
-        // console.log(amount)
-        subPosition.moveDown(amount);
+        // console.log(subPosition.y)
+        subPosition.moveDown(+amount);
       }
     });
-    console.log(subPosition.y);
+    console.log(subPosition);
+    console.log(subPosition.x * subPosition.y)
   });
 
-// console.log(subPosition)
+// answer part 1
+//Position { x: 1923, y: 1001 }
+//1924923
