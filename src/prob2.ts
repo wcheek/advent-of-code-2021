@@ -24,18 +24,21 @@ const instructions = asyncReadFile("../assets/prob2_input.txt");
 class Position {
   x: number;
   y: number;
-  constructor(x = 0, y = 0) {
+  aim: number;
+  constructor(x = 0, y = 0, aim = 0) {
     this.x = x;
     this.y = y;
+    this.aim = aim;
   }
   moveForward(n: number): void {
     this.x += n as number;
+    this.y += this.aim * n;
   }
   moveUp(n: number): void {
-    this.y -= n as number;
+    this.aim -= n as number;
   }
   moveDown(n: number): void {
-    this.y += n as number;
+    this.aim += n as number;
   }
 }
 
@@ -55,9 +58,12 @@ instructions
       }
     });
     console.log(subPosition);
-    console.log(subPosition.x * subPosition.y)
+    console.log(subPosition.x * subPosition.y);
   });
 
 // answer part 1
 //Position { x: 1923, y: 1001 }
 //1924923
+// answer part 2
+// Position { x: 1923, y: 1030939, aim: 1001 }
+// 1982495697
