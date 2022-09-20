@@ -23,11 +23,17 @@ async function asyncReadFile(filename: string) {
 }
 class bingoCard {
   bingoArray: number[][];
-  constructor(bingoArray: number[][]) {
+  cardNumber: number;
+  constructor(bingoArray: number[][], cardNumber: number) {
     this.bingoArray = bingoArray;
+    this.cardNumber = cardNumber;
   }
 }
-let bingoCards: bingoCard[] = Array(100).fill(new bingoCard([]));
+let bingoCards: bingoCard[] = [];
+for (let i = 0; i < 100; i++) {
+  bingoCards.push(new bingoCard([], i));
+}
+// let bingoCards: bingoCard[] = Array(100).fill(new bingoCard([], ));
 let bingoCardsInput = asyncReadFile("../assets/prob4_input.txt");
 
 let getNumberRow = function (value: string): number[] {
@@ -48,10 +54,14 @@ bingoCardsInput
       if (numbers.length != 1) {
         // console.log(index)
         // console.log(Math.floor(index / 6));
-        console.log(numbers)
-        console.log(bingoCards[0])
+        // console.log(numbers);
         bingoCards[Math.floor(index / 6)].bingoArray[index % 6] = numbers;
+        // if (index < 16) {
+        //   console.log(index);
+        //   console.log(Math.floor(index / 6));
+        //   console.log(bingoCards.at(1));
+        // }
       }
     });
-    // console.log(bingoCards[9]);
+    console.log(bingoCards[99]);
   });
