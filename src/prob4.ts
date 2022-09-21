@@ -9,11 +9,7 @@ const bingoNumbers: number[] = [
 ];
 // ✅ read file SYNCHRONOUSLY
 function syncReadFile(filename: string) {
-  const result = readFileSync(join(__dirname, filename), "utf-8");
-
-  // console.log(result); // 👉️ "hello world hello world ..."
-
-  return result;
+  return readFileSync(join(__dirname, filename), "utf-8");
 }
 
 class bingoCard {
@@ -115,10 +111,8 @@ class bingoGame {
       // Check for filled cols
       let matchingCols: boolean[] = [];
       for (let colNum of Array.from({ length: 5 }, (v, i) => i)) {
-        // console.log(colNum);
         matchingCols.push(this.getColMatch(bingoCard, colNum));
       }
-      // console.log(matchingCols);
       if (matchingCols.some((v) => v === true)) {
         return bingoCard;
       }
@@ -159,10 +153,7 @@ class bingoGame {
       bingoCard,
       number
     ];
-    console.log(winningCard);
-    console.log(winningNum);
     let cardSum = this.calcCardSumUnmarkedNums(winningCard);
-    console.log(cardSum);
     return cardSum * winningNum;
   }
 }
