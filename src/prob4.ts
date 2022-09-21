@@ -90,41 +90,30 @@ class bingoGame {
     );
   }
 
-  private checkForWinningCards(): void | number {
-    this.bingoCards.forEach((bingoCard: bingoCard, bingoCardNum: number) => {
-      bingoCard.statusArray.forEach(
-        // First check rows
-        (bingoStatusCardRow: boolean[], bingoCardRowNum: number) => {
-          if (bingoStatusCardRow.every((v) => v === true)) {
-            return this.bingoCards[bingoCardNum];
-          } else {
-            return undefined;
-          }
+  private checkForWinningCards() {
+    for (let bingoCard of this.bingoCards) {
+      for (let bingoStatusCardRow of bingoCard.statusArray) {
+        if (bingoStatusCardRow.every((v) => v === true)) {
+          return bingoCard;
         }
-      );
-    });
+      }
+    }
   }
 
   playGame() {
-    bingoNumbers.forEach((searchNum: number) => {
-      this.bingoCards.forEach((bingoCard: bingoCard, bingoCardNum: number) => {
+    for (let searchNum of bingoNumbers) {
+      for (let bingoCard of this.bingoCards) {
         this.searchBingoCardForNumber(bingoCard, searchNum);
         let winningCard = this.checkForWinningCards();
         if (typeof winningCard == typeof bingoCard) {
-          console.log(winningCard)
           return winningCard;
         }
-        // if (Number.isFinite(winningCardNum)) {
-        //   console.log(winningCardNum);
-        //   let winningCard = this.bingoCards[winningCardNum as number];
-        //   return winningCard;
-        // }
-      });
-    });
+      }
+    }
   }
 }
 
 let game = new bingoGame();
 // console.log(game.bingoCards[1]);
 let winningCard = game.playGame();
-// console.log(winningCard);
+console.log(winningCard);
