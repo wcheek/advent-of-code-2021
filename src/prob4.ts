@@ -90,17 +90,36 @@ class bingoGame {
     );
   }
 
+  private getColMatch(bingoCard: bingoCard, colNum: number): boolean {
+    return (
+      bingoCard.numberArray[0][colNum] == bingoCard.numberArray[1][colNum] &&
+      bingoCard.numberArray[1][colNum] == bingoCard.numberArray[2][colNum] &&
+      bingoCard.numberArray[2][colNum] == bingoCard.numberArray[3][colNum] &&
+      bingoCard.numberArray[3][colNum] == bingoCard.numberArray[4][colNum] &&
+      bingoCard.numberArray[4][colNum] == bingoCard.numberArray[5][colNum]
+    );
+  }
+
   private checkForWinningCards() {
     for (let bingoCard of this.bingoCards) {
+      // Check for filled rows
       for (let bingoStatusCardRow of bingoCard.statusArray) {
         if (bingoStatusCardRow.every((v) => v === true)) {
           return bingoCard;
         }
       }
+      // Check for filled cols
+      let matchingCols: boolean[] = [];
+      for (let colNum of Array.from({ length: 5 }, (v, i) => i)) {
+        matchingCols.push(this.getColMatch(bingoCard, colNum));
+      }
+      if (matchingCols.every((v) => v === true)) {
+        return bingoCard;
+      }
     }
   }
 
-  playGame() {
+  private getWinningCard() {
     for (let searchNum of bingoNumbers) {
       for (let bingoCard of this.bingoCards) {
         this.searchBingoCardForNumber(bingoCard, searchNum);
@@ -115,5 +134,5 @@ class bingoGame {
 
 let game = new bingoGame();
 // console.log(game.bingoCards[1]);
-let winningCard = game.playGame();
+let winningCard = game.getWinningCard();
 console.log(winningCard);
