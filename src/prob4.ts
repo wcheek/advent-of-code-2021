@@ -119,20 +119,44 @@ class bingoGame {
     }
   }
 
-  private getWinningCard() {
+  private getWinningCardAndNum(): [bingoCard | void, number] | void {
     for (let searchNum of bingoNumbers) {
       for (let bingoCard of this.bingoCards) {
         this.searchBingoCardForNumber(bingoCard, searchNum);
         let winningCard = this.checkForWinningCards();
         if (typeof winningCard == typeof bingoCard) {
-          return winningCard;
+          return [winningCard, searchNum];
         }
       }
     }
   }
+
+  private calcCardSum(card: bingoCard): number {
+    let cardSum: number = 0;
+    for (let i = 0; i < card.numberArray.length; i++) {
+      let bingoRow = card.numberArray[i];
+      let statusRow = card.statusArray[i];
+      let sumRow = bingoRow
+        .filter((value: number, index: number) => {
+          return statusRow[index];
+        })
+        .reduce((prev: number, current: number) => {
+          return prev + current;
+        });
+      cardSum += sumRow;
+    }
+    return cardSum;
+  }
+  getFinalScore(): number {
+    let [winningCard, winningNum] = this.getWinningCardAndNum() as [
+      bingoCard,
+      number
+    ];
+    let cardSum = game.calcCardSum(winningCard);
+    return cardSum * winningNum
+  }
 }
 
 let game = new bingoGame();
-// console.log(game.bingoCards[1]);
-let winningCard = game.getWinningCard();
-console.log(winningCard);
+let finalScore = game.getFinalScore();
+console.log(finalScore);
