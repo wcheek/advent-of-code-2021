@@ -36,7 +36,7 @@ class bingoGame {
     this.getCards();
   }
 
-  static getNumberRow(value: string): number[] {
+  private getNumberRow(value: string): number[] {
     let newValue = value[0] == " " ? value.slice(1) : value;
     let numbers: number[] = [];
     let doubleSplit = newValue.split("  ");
@@ -46,20 +46,21 @@ class bingoGame {
     return numbers;
   }
 
-  static buildBingoCards() {
+  private buildBingoCards() {
     let bingoCards: bingoCard[] = [];
     for (let i = 0; i < 100; i++) {
       bingoCards.push(new bingoCard([], [], i));
     }
     return bingoCards;
   }
-  static processBingoCards(
+
+  private processBingoCards(
     bingoCardsInput: string,
     bingoCards: bingoCard[]
   ): bingoCard[] {
     let inputArray = bingoCardsInput.split("\n").map(String);
     inputArray.forEach((value: string, index: number, array: string[]) => {
-      let numbers = bingoGame.getNumberRow(value);
+      let numbers = this.getNumberRow(value);
       if (numbers.length != 1) {
         bingoCards[Math.floor(index / 6)].numberArray[index % 6] = numbers;
         bingoCards[Math.floor(index / 6)].statusArray[index % 6] = Array(
@@ -69,12 +70,61 @@ class bingoGame {
     });
     return bingoCards;
   }
-  getCards() {
-    let bingoCards = bingoGame.buildBingoCards();
+
+  private getCards() {
+    let bingoCards = this.buildBingoCards();
     let bingoCardsInput = syncReadFile("../assets/prob4_input.txt");
-    this.bingoCards = bingoGame.processBingoCards(bingoCardsInput, bingoCards);
+    this.bingoCards = this.processBingoCards(bingoCardsInput, bingoCards);
+  }
+
+  private searchBingoCardForNumber(bingoCard: bingoCard, number: number) {
+    // Searches through each bingoCard and finds any rows/cols where the number
+    // matches
+    bingoCard.numberArray.forEach(
+      (bingoCardRow: number[], bingoCardRowNum: number) => {
+        if (bingoCardRow.includes(number)) {
+          let bingoCardColNum = bingoCardRow.indexOf(number);
+          bingoCard.statusArray[bingoCardRowNum][bingoCardColNum] = true;
+        }
+      }
+    );
+  }
+
+  private checkForWinningCards(): void | number {
+    this.bingoCards.forEach((bingoCard: bingoCard, bingoCardNum: number) => {
+      bingoCard.statusArray.forEach(
+        // First check rows
+        (bingoStatusCardRow: boolean[], bingoCardRowNum: number) => {
+          if (bingoStatusCardRow.every((v) => v === true)) {
+            return this.bingoCards[bingoCardNum];
+          } else {
+            return undefined;
+          }
+        }
+      );
+    });
+  }
+
+  playGame() {
+    bingoNumbers.forEach((searchNum: number) => {
+      this.bingoCards.forEach((bingoCard: bingoCard, bingoCardNum: number) => {
+        this.searchBingoCardForNumber(bingoCard, searchNum);
+        let winningCard = this.checkForWinningCards();
+        if (typeof winningCard == typeof bingoCard) {
+          console.log(winningCard)
+          return winningCard;
+        }
+        // if (Number.isFinite(winningCardNum)) {
+        //   console.log(winningCardNum);
+        //   let winningCard = this.bingoCards[winningCardNum as number];
+        //   return winningCard;
+        // }
+      });
+    });
   }
 }
 
 let game = new bingoGame();
-console.log(game.bingoCards[1]);
+// console.log(game.bingoCards[1]);
+let winningCard = game.playGame();
+// console.log(winningCard);
