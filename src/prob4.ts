@@ -16,14 +16,17 @@ class bingoCard {
   numberArray: number[][];
   statusArray: boolean[][];
   cardNumber: number;
+  winner: boolean;
   constructor(
     numberArray: number[][],
     statusArray: boolean[][],
-    cardNumber: number
+    cardNumber: number,
+    winner: boolean
   ) {
     this.numberArray = numberArray;
     this.statusArray = statusArray;
     this.cardNumber = cardNumber;
+    this.winner = winner
   }
 }
 
@@ -47,7 +50,7 @@ class bingoGame {
   private buildBlankBingoCards() {
     let bingoCards: bingoCard[] = [];
     for (let i = 0; i < 100; i++) {
-      bingoCards.push(new bingoCard([], [], i));
+      bingoCards.push(new bingoCard([], [], i, false));
     }
     return bingoCards;
   }
@@ -102,33 +105,48 @@ class bingoGame {
 
   private checkForWinningCards() {
     for (let bingoCard of this.bingoCards) {
+      let numMatchingRows = 0;
       // Check for filled rows
       for (let bingoStatusCardRow of bingoCard.statusArray) {
         if (bingoStatusCardRow.every((v) => v === true)) {
-          return bingoCard;
+          // return bingoCard;
+          numMatchingRows += 1;
         }
       }
+      // if (numMatchingRows === 1) {
+      //   return bingoCard;
+      // }
       // Check for filled cols
       let matchingCols: boolean[] = [];
       for (let colNum of Array.from({ length: 5 }, (v, i) => i)) {
         matchingCols.push(this.getColMatch(bingoCard, colNum));
       }
-      if (matchingCols.some((v) => v === true)) {
+      // if (matchingCols.some((v) => v === true)) {
+      if (
+        (numMatchingRows === 1 || matchingCols.filter(Boolean).length === 1) &&
+        !bingoCard.winner
+      ) {
+        // console.log(matchingCols.filter(Boolean).length);
+        this.bingoCards[bingoCard.cardNumber].winner = true;
         return bingoCard;
       }
     }
   }
 
-  private getWinningCardAndNum(): [bingoCard | void, number] | void {
+  private getWinningCardsAndNums() {
+    let winningCards = [];
     for (let searchNum of bingoNumbers) {
       for (let bingoCard of this.bingoCards) {
         this.searchBingoCardForNumber(bingoCard, searchNum);
         let winningCard = this.checkForWinningCards();
         if (typeof winningCard == typeof bingoCard) {
-          return [winningCard, searchNum];
+          winningCards.push([winningCard, searchNum]);
+          // return [winningCard, searchNum];
         }
       }
     }
+    // console.log(winningCards)
+    return winningCards;
   }
 
   private calcCardSumUnmarkedNums(card: bingoCard): number {
@@ -148,13 +166,16 @@ class bingoGame {
     return cardSum;
   }
 
-  getFinalScore(): number {
-    let [winningCard, winningNum] = this.getWinningCardAndNum() as [
-      bingoCard,
-      number
-    ];
-    let cardSum = this.calcCardSumUnmarkedNums(winningCard);
-    return cardSum * winningNum;
+  getFinalScore() {
+    let winningCards = this.getWinningCardsAndNums();
+    console.log(winningCards.length);
+    console.log(winningCards[winningCards.length - 1][0]);
+    let cardSum = this.calcCardSumUnmarkedNums(
+      winningCards[winningCards.length - 1][0] as bingoCard
+    );
+
+    let lastNum = winningCards[winningCards.length - 1][1] as number;
+    return cardSum * lastNum;
   }
 }
 
