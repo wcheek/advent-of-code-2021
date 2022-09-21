@@ -18,9 +18,15 @@ function syncReadFile(filename: string) {
 
 class bingoCard {
   numberArray: number[][];
+  statusArray: boolean[][];
   cardNumber: number;
-  constructor(numberArray: number[][], cardNumber: number) {
+  constructor(
+    numberArray: number[][],
+    statusArray: boolean[][],
+    cardNumber: number
+  ) {
     this.numberArray = numberArray;
+    this.statusArray = statusArray;
     this.cardNumber = cardNumber;
   }
 }
@@ -43,7 +49,7 @@ class bingoGame {
   static buildBingoCards() {
     let bingoCards: bingoCard[] = [];
     for (let i = 0; i < 100; i++) {
-      bingoCards.push(new bingoCard([], i));
+      bingoCards.push(new bingoCard([], [], i));
     }
     return bingoCards;
   }
@@ -51,11 +57,14 @@ class bingoGame {
     bingoCardsInput: string,
     bingoCards: bingoCard[]
   ): bingoCard[] {
-    let resultArray = bingoCardsInput.split("\n").map(String);
-    resultArray.forEach((value: string, index: number, array: string[]) => {
+    let inputArray = bingoCardsInput.split("\n").map(String);
+    inputArray.forEach((value: string, index: number, array: string[]) => {
       let numbers = bingoGame.getNumberRow(value);
       if (numbers.length != 1) {
         bingoCards[Math.floor(index / 6)].numberArray[index % 6] = numbers;
+        bingoCards[Math.floor(index / 6)].statusArray[index % 6] = Array(
+          numbers.length
+        ).fill(false);
       }
     });
     return bingoCards;
@@ -63,8 +72,7 @@ class bingoGame {
   getCards() {
     let bingoCards = bingoGame.buildBingoCards();
     let bingoCardsInput = syncReadFile("../assets/prob4_input.txt");
-    bingoCards = bingoGame.processBingoCards(bingoCardsInput, bingoCards);
-    this.bingoCards = bingoCards;
+    this.bingoCards = bingoGame.processBingoCards(bingoCardsInput, bingoCards);
   }
 }
 
