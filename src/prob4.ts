@@ -28,7 +28,7 @@ class bingoCard {
 }
 
 class bingoGame {
-  bingoCards: bingoCard[];
+  private bingoCards: bingoCard[];
 
   constructor() {
     this.bingoCards = this.getCards();
