@@ -11,7 +11,7 @@ const bingoNumbers: number[] = [
 function syncReadFile(filename: string) {
   const result = readFileSync(join(__dirname, filename), "utf-8");
 
-  console.log(result); // 👉️ "hello world hello world ..."
+  // console.log(result); // 👉️ "hello world hello world ..."
 
   return result;
 }
@@ -29,6 +29,15 @@ class bingoGame {
   constructor() {
     this.getCards();
   }
+  static getNumberRow(value: string): number[] {
+    let newValue = value[0] == " " ? value.slice(1) : value;
+    let numbers: number[] = [];
+    let doubleSplit = newValue.split("  ");
+    doubleSplit.forEach((value) => {
+      numbers = [...numbers, ...value.split(" ").map(Number)];
+    });
+    return numbers;
+  }
   getCards() {
     let bingoCards: bingoCard[] = [];
     for (let i = 0; i < 100; i++) {
@@ -36,19 +45,9 @@ class bingoGame {
     }
     let bingoCardsInput = syncReadFile("../assets/prob4_input.txt");
 
-    let getNumberRow = function (value: string): number[] {
-      let newValue = value[0] == " " ? value.slice(1) : value;
-      let numbers: number[] = [];
-      let doubleSplit = newValue.split("  ");
-      doubleSplit.forEach((value) => {
-        numbers = [...numbers, ...value.split(" ").map(Number)];
-      });
-      return numbers;
-    };
-
     let resultArray = bingoCardsInput.split("\n").map(String);
     resultArray.forEach((value: string, index: number, array: string[]) => {
-      let numbers = getNumberRow(value);
+      let numbers = bingoGame.getNumberRow(value);
       if (numbers.length != 1) {
         bingoCards[Math.floor(index / 6)].numberArray[index % 6] = numbers;
       }
@@ -58,4 +57,4 @@ class bingoGame {
 }
 
 let game = new bingoGame();
-console.log(game.bingoCards[0]);
+console.log(game.bingoCards[1]);
