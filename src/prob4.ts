@@ -29,6 +29,7 @@ class bingoGame {
   constructor() {
     this.getCards();
   }
+
   static getNumberRow(value: string): number[] {
     let newValue = value[0] == " " ? value.slice(1) : value;
     let numbers: number[] = [];
@@ -38,13 +39,18 @@ class bingoGame {
     });
     return numbers;
   }
-  getCards() {
+
+  static buildBingoCards() {
     let bingoCards: bingoCard[] = [];
     for (let i = 0; i < 100; i++) {
       bingoCards.push(new bingoCard([], i));
     }
-    let bingoCardsInput = syncReadFile("../assets/prob4_input.txt");
-
+    return bingoCards;
+  }
+  static processBingoCards(
+    bingoCardsInput: string,
+    bingoCards: bingoCard[]
+  ): bingoCard[] {
     let resultArray = bingoCardsInput.split("\n").map(String);
     resultArray.forEach((value: string, index: number, array: string[]) => {
       let numbers = bingoGame.getNumberRow(value);
@@ -52,6 +58,12 @@ class bingoGame {
         bingoCards[Math.floor(index / 6)].numberArray[index % 6] = numbers;
       }
     });
+    return bingoCards;
+  }
+  getCards() {
+    let bingoCards = bingoGame.buildBingoCards();
+    let bingoCardsInput = syncReadFile("../assets/prob4_input.txt");
+    bingoCards = bingoGame.processBingoCards(bingoCardsInput, bingoCards);
     this.bingoCards = bingoCards;
   }
 }
