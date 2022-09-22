@@ -7,14 +7,14 @@ function syncReadFile(filename: string) {
 
 class Input {
   private input: number[][][];
-  filteredInput: number[][][];
+  protected filteredInput: number[][][];
   constructor() {
     this.input = this.getInput();
     this.filteredInput = this.filterInput();
   }
 
   private getInput(): number[][][] {
-    let input = syncReadFile("../assets/prob5_input_copy.txt");
+    let input = syncReadFile("../assets/prob5_input.txt");
     let inputArray = input.split("\n").map(String);
     let xyPairs: number[][][] = inputArray.map((coords) => {
       let tup = coords.split(" -> ").map(String);
@@ -34,12 +34,15 @@ class Input {
 }
 
 class Field extends Input {
-  private field: number[][];
   // the field is referenced as [y][x] whereas the input is [x][y]
+  field: number[][];
+  numPointsGreaterThanOne: number;
+
   constructor() {
     super();
     this.field = this.createEmptyField();
     this.fillField();
+    this.numPointsGreaterThanOne = this.getPointsGreaterThanOne();
   }
 
   private createEmptyField(): number[][] {
@@ -47,18 +50,14 @@ class Field extends Input {
     return Array(1000).fill(Array(1000).fill(0));
   }
 
-  private getRangeToFill(
-    initialVal: number,
-    constVal: number,
-    distance: number
-  ): number[] {
+  private getRangeToFill(initialVal: number, distance: number): number[] {
     // Basically take the distance and translate to the initial val
     return Array.from(Array(distance + 1).keys()).map((coords) => {
       return coords + initialVal;
     });
   }
 
-  fillField() {
+  private fillField() {
     for (const coords of this.filteredInput) {
       if (coords[0][0] === coords[1][0]) {
         // X is the same.
@@ -71,11 +70,11 @@ class Field extends Input {
         if (y0 < y1) {
           // vertical line goes from up to down
           let vertDist = y1 - y0;
-          rangeToFill = this.getRangeToFill(y0, xConst, vertDist);
+          rangeToFill = this.getRangeToFill(y0, vertDist);
         } else if (y0 > y1) {
           // vertical line goes from down to up
           let vertDist = y0 - y1;
-          rangeToFill = this.getRangeToFill(y1, xConst, vertDist);
+          rangeToFill = this.getRangeToFill(y1, vertDist);
         }
         for (let yCoord of rangeToFill) {
           this.field[yCoord][xConst] += 1;
@@ -91,11 +90,11 @@ class Field extends Input {
         if (x0 < x1) {
           // horizontal line goes from left to right
           let horDist = x1 - x0;
-          rangeToFill = this.getRangeToFill(x0, yConst, horDist);
+          rangeToFill = this.getRangeToFill(x0, horDist);
         } else if (x0 > x1) {
           // horizontal line goes right to left
           let horDist = x0 - x1;
-          rangeToFill = this.getRangeToFill(x1, yConst, horDist);
+          rangeToFill = this.getRangeToFill(x1, horDist);
         }
         for (let xCoord of rangeToFill) {
           this.field[yConst][xCoord] += 1;
@@ -103,6 +102,17 @@ class Field extends Input {
       }
     }
   }
+
+  private getPointsGreaterThanOne() {
+    let numPoints: number = 0;
+    for (let xRow of this.field) {
+      numPoints += xRow.filter((coord) => {
+        return coord > 1;
+      }).length;
+    }
+    return numPoints;
+  }
 }
 
 let field = new Field();
+console.log(field.numPointsGreaterThanOne);
