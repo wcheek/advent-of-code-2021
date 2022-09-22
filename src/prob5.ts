@@ -84,14 +84,21 @@ class Field extends Input {
       if (coords[0][1] === coords[1][1]) {
         // Y is the same.
         //Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
+        let yConst = coords[0][1];
         let x0 = coords[0][0];
         let x1 = coords[1][0];
+        let rangeToFill: number[] = [];
         if (x0 < x1) {
           // horizontal line goes from left to right
           let horDist = x1 - x0;
+          rangeToFill = this.getRangeToFill(x0, yConst, horDist);
         } else if (x0 > x1) {
           // horizontal line goes right to left
           let horDist = x0 - x1;
+          rangeToFill = this.getRangeToFill(x1, yConst, horDist);
+        }
+        for (let xCoord of rangeToFill) {
+          this.field[yConst][xCoord] += 1;
         }
       }
     }
