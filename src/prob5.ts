@@ -11,11 +11,10 @@ class Input {
   constructor() {
     this.input = this.getInput();
     this.filteredInput = this.filterInput();
-    console.log(this.filteredInput);
   }
 
   private getInput(): number[][][] {
-    let input = syncReadFile("../assets/prob5_input.txt");
+    let input = syncReadFile("../assets/prob5_input_copy.txt");
     let inputArray = input.split("\n").map(String);
     let xyPairs: number[][][] = inputArray.map((coords) => {
       let tup = coords.split(" -> ").map(String);
@@ -36,6 +35,7 @@ class Input {
 
 class Field extends Input {
   private field: number[][];
+  // the field is referenced as [y][x] whereas the input is [x][y]
   constructor() {
     super();
     this.field = this.createEmptyField();
@@ -47,19 +47,38 @@ class Field extends Input {
     return Array(1000).fill(Array(1000).fill(0));
   }
 
+  private getRangeToFill(
+    initialVal: number,
+    constVal: number,
+    distance: number
+  ): number[] {
+    // Basically take the distance and translate to the initial val
+    return Array.from(Array(distance + 1).keys()).map((coords) => {
+      return coords + initialVal;
+    });
+  }
+
   fillField() {
     for (const coords of this.filteredInput) {
       if (coords[0][0] === coords[1][0]) {
         // X is the same.
         //Draw a vertical line between coords[0][1] (y0) and coords[1][1] (y1)
+        // REMEMBER Y IS INVERTED. Down is +
+        let xConst = coords[0][0];
         let y0 = coords[0][1];
         let y1 = coords[1][1];
+        let rangeToFill: number[] = [];
         if (y0 < y1) {
-          // vertical line goes from down to up
-          let vertDist = y1 - y0;
-        } else if (y0 > y1) {
           // vertical line goes from up to down
+          let vertDist = y1 - y0;
+          rangeToFill = this.getRangeToFill(y0, xConst, vertDist);
+        } else if (y0 > y1) {
+          // vertical line goes from down to up
           let vertDist = y0 - y1;
+          rangeToFill = this.getRangeToFill(y1, xConst, vertDist);
+        }
+        for (let yCoord of rangeToFill) {
+          this.field[yCoord][xConst] += 1;
         }
       }
       if (coords[0][1] === coords[1][1]) {
