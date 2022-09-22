@@ -47,7 +47,7 @@ class Field extends Input {
 
   private createEmptyField(): number[][] {
     // 1000 X 1000 field of 0s
-    return Array(1000).fill(Array(1000).fill(0));
+    return Array(1000).fill(0).map(() => new Array(1000).fill(0))
   }
 
   private getRangeToFill(initialVal: number, distance: number): number[] {
@@ -96,11 +96,8 @@ class Field extends Input {
           let horDist = x0 - x1;
           rangeToFill = this.getRangeToFill(x1, horDist);
         }
-        // console.log(rangeToFill)
         for (let xCoord of rangeToFill) {
-          //   console.log(this.field[yConst]);
           this.field[yConst][xCoord] += 1;
-          //   console.log(this.field[yConst]);
         }
       }
     }
@@ -119,4 +116,4 @@ class Field extends Input {
 
 let field = new Field();
 console.log(field.field);
-// console.log(field.numPointsGreaterThanOne);
+console.log(field.numPointsGreaterThanOne);
