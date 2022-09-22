@@ -52,20 +52,22 @@ class Field extends Input {
 
   private getRangeToFill(initialVal: number, distance: number): number[] {
     // Basically take the distance and translate to the initial val
-    return Array.from(Array(distance + 1).keys()).map((coords) => {
-      return coords + initialVal;
+    return Array.from(Array(distance + 1).keys()).map((coord) => {
+      return coord + initialVal;
     });
   }
 
   private fillField() {
     for (const coords of this.filteredInput) {
-      if (coords[0][0] === coords[1][0]) {
+      let y0 = coords[0][1];
+      let y1 = coords[1][1];
+      let x0 = coords[0][0];
+      let x1 = coords[1][0];
+      if (x0 === x1) {
         // X is the same.
         //Draw a vertical line between coords[0][1] (y0) and coords[1][1] (y1)
         // REMEMBER Y IS INVERTED. Down is +
         let xConst = coords[0][0];
-        let y0 = coords[0][1];
-        let y1 = coords[1][1];
         let rangeToFill: number[] = [];
         if (y0 < y1) {
           // vertical line goes from up to down
@@ -80,12 +82,10 @@ class Field extends Input {
           this.field[yCoord][xConst] += 1;
         }
       }
-      if (coords[0][1] === coords[1][1]) {
+      if (y0 === y1) {
         // Y is the same.
         //Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
         let yConst = coords[0][1];
-        let x0 = coords[0][0];
-        let x1 = coords[1][0];
         let rangeToFill: number[] = [];
         if (x0 < x1) {
           // horizontal line goes from left to right
@@ -96,6 +96,7 @@ class Field extends Input {
           let horDist = x0 - x1;
           rangeToFill = this.getRangeToFill(x1, horDist);
         }
+        // console.log(rangeToFill)
         for (let xCoord of rangeToFill) {
           this.field[yConst][xCoord] += 1;
         }
@@ -115,4 +116,5 @@ class Field extends Input {
 }
 
 let field = new Field();
+console.log(field.field)
 console.log(field.numPointsGreaterThanOne);
