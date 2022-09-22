@@ -29,8 +29,8 @@ class bingoCard {
 
 class bingoGame {
   private bingoCards: bingoCard[];
-  winningCards: bingoCard[];
-  searchNums: number[];
+  private winningCards: bingoCard[];
+  private searchNums: number[];
 
   constructor() {
     this.bingoCards = this.getCards();
@@ -125,7 +125,6 @@ class bingoGame {
 
   private getWinningCardsAndNums() {
     // Need to filter here for bingo cards that have not been won yet.
-
     if (this.winningCards.length < 100) {
       for (let searchNum of bingoNumbers) {
         let alreadyWonIndices: number[] = this.winningCards.map((card) => {
@@ -134,11 +133,7 @@ class bingoGame {
         let notWonCards: bingoCard[] = this.bingoCards.filter((card) => {
           return !alreadyWonIndices.includes(card.cardNumber);
         });
-        // console.log(this.winningCards);
-        // console.log(this.bingoCards);
         for (let bingoCard of notWonCards) {
-          // console.log(bingoCard)
-          this.searchBingoCardForNumber(bingoCard, searchNum);
           this.checkForWinningCard(bingoCard, searchNum);
         }
       }
@@ -165,13 +160,10 @@ class bingoGame {
 
   getFinalScore() {
     this.getWinningCardsAndNums();
-    // console.log(this.winningCards.length);
-    // console.log(this.searchNums.length);
-    let winningCard: bingoCard =
+    let lastWinningCard: bingoCard =
       this.winningCards[this.winningCards.length - 1];
-    // console.log(winningCard);
     let lastNum = this.searchNums[this.searchNums.length - 1];
-    let cardSum = this.calcCardSumUnmarkedNums(winningCard);
+    let cardSum = this.calcCardSumUnmarkedNums(lastWinningCard);
 
     return cardSum * lastNum;
   }
@@ -180,4 +172,3 @@ class bingoGame {
 let game = new bingoGame();
 let finalScore = game.getFinalScore();
 console.log(finalScore);
-// console.log(game.winningCards[game.winningCards.length - 1]);
