@@ -51,23 +51,23 @@ class Field extends Input {
     for (const coords of this.filteredInput) {
       if (coords[0][0] === coords[1][0]) {
         // X is the same.
-        //Draw a vertical line between coords[0][1] and coords[1][1]
+        //Draw a vertical line between coords[0][1] (y0) and coords[1][1] (y1)
         let y0 = coords[0][1];
         let y1 = coords[1][1];
-        if (coords[0][1] < coords[1][1]) {
+        if (y0 < y1) {
           // vertical line goes from down to up
-        } else if (coords[0][1] > coords[1][1]) {
+        } else if (y0 > y1) {
           // vertical line goes from up to down
         }
       }
       if (coords[0][1] === coords[1][1]) {
         // Y is the same.
-        //Draw a horizontal line between coords[0][0] and coords[1][0]
-        let x0 = coords[0][0]
-        let x1 = coords[1][0]
-        if (coords[0][0] < coords[1][0]) {
+        //Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
+        let x0 = coords[0][0];
+        let x1 = coords[1][0];
+        if (x0 < x1) {
           // horizontal line goes from left to right
-        } else if (coords[0][0] > coords[1][1]) {
+        } else if (x0 > x1) {
           // horizontal line goes right to left
         }
       }
