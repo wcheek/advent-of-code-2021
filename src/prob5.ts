@@ -11,6 +11,7 @@ class Input {
   constructor() {
     this.input = this.getInput();
     this.filteredInput = this.filterInput();
+    console.log(this.filteredInput);
   }
 
   private getInput(): number[][][] {
@@ -46,10 +47,30 @@ class Field extends Input {
     return Array(1000).fill(Array(1000).fill(0));
   }
 
-
   fillField() {
     for (const coords of this.filteredInput) {
-
+      if (coords[0][0] === coords[1][0]) {
+        // X is the same.
+        //Draw a vertical line between coords[0][1] and coords[1][1]
+        let y0 = coords[0][1];
+        let y1 = coords[1][1];
+        if (coords[0][1] < coords[1][1]) {
+          // vertical line goes from down to up
+        } else if (coords[0][1] > coords[1][1]) {
+          // vertical line goes from up to down
+        }
+      }
+      if (coords[0][1] === coords[1][1]) {
+        // Y is the same.
+        //Draw a horizontal line between coords[0][0] and coords[1][0]
+        let x0 = coords[0][0]
+        let x1 = coords[1][0]
+        if (coords[0][0] < coords[1][0]) {
+          // horizontal line goes from left to right
+        } else if (coords[0][0] > coords[1][1]) {
+          // horizontal line goes right to left
+        }
+      }
     }
   }
 }
