@@ -56,8 +56,10 @@ class Field extends Input {
         let y1 = coords[1][1];
         if (y0 < y1) {
           // vertical line goes from down to up
+          let vertDist = y1 - y0;
         } else if (y0 > y1) {
           // vertical line goes from up to down
+          let vertDist = y0 - y1;
         }
       }
       if (coords[0][1] === coords[1][1]) {
@@ -67,8 +69,10 @@ class Field extends Input {
         let x1 = coords[1][0];
         if (x0 < x1) {
           // horizontal line goes from left to right
+          let horDist = x1 - x0;
         } else if (x0 > x1) {
           // horizontal line goes right to left
+          let horDist = x0 - x1;
         }
       }
     }
