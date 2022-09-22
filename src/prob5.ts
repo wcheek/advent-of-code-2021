@@ -65,9 +65,9 @@ class Field extends Input {
       let x1 = coords[1][0];
       if (x0 === x1) {
         // X is the same.
-        //Draw a vertical line between coords[0][1] (y0) and coords[1][1] (y1)
+        let xConst = x0;
+        // Draw a vertical line between coords[0][1] (y0) and coords[1][1] (y1)
         // REMEMBER Y IS INVERTED. Down is +
-        let xConst = coords[0][0];
         let rangeToFill: number[] = [];
         if (y0 < y1) {
           // vertical line goes from up to down
@@ -84,8 +84,8 @@ class Field extends Input {
       }
       if (y0 === y1) {
         // Y is the same.
-        //Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
-        let yConst = coords[0][1];
+        let yConst = y0;
+        // Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
         let rangeToFill: number[] = [];
         if (x0 < x1) {
           // horizontal line goes from left to right
@@ -98,7 +98,9 @@ class Field extends Input {
         }
         // console.log(rangeToFill)
         for (let xCoord of rangeToFill) {
+          //   console.log(this.field[yConst]);
           this.field[yConst][xCoord] += 1;
+          //   console.log(this.field[yConst]);
         }
       }
     }
@@ -116,5 +118,5 @@ class Field extends Input {
 }
 
 let field = new Field();
-console.log(field.field)
-console.log(field.numPointsGreaterThanOne);
+console.log(field.field);
+// console.log(field.numPointsGreaterThanOne);
