@@ -45,13 +45,12 @@ class School extends Input {
   }
 
   protected liveAndBreed() {
-    for (let dayNum = 0; dayNum < 80; dayNum++) {
+    for (let dayNum = 0; dayNum < 256; dayNum++) {
       // console.log(this.schoolOfFish)
       let currentSchool = this.schoolOfFish;
       for (let fish of currentSchool) {
         if (fish.interval === 0) {
           this.schoolOfFish.push(new Fish(9));
-
           fish.interval = 6;
         } else {
           fish.interval -= 1;
