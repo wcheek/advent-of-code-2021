@@ -6,7 +6,7 @@ function syncReadFile(filename: string) {
 }
 
 class Input {
-  private input: number[][][];
+  input: number[][][];
   protected filteredInput: number[][][];
   constructor() {
     this.input = this.getInput();
@@ -22,6 +22,7 @@ class Input {
     });
     return xyPairs;
   }
+
   private filterInput(): number[][][] {
     let filteredInput: number[][][] = [];
     for (const coords of this.input) {
@@ -47,7 +48,9 @@ class Field extends Input {
 
   private createEmptyField(): number[][] {
     // 1000 X 1000 field of 0s
-    return Array(1000).fill(0).map(() => new Array(1000).fill(0))
+    return Array(1000)
+      .fill(0)
+      .map(() => new Array(1000).fill(0));
   }
 
   private getRangeToFill(initialVal: number, distance: number): number[] {
@@ -58,7 +61,7 @@ class Field extends Input {
   }
 
   private fillField() {
-    for (const coords of this.filteredInput) {
+    for (const coords of this.input) {
       let y0 = coords[0][1];
       let y1 = coords[1][1];
       let x0 = coords[0][0];
@@ -81,8 +84,7 @@ class Field extends Input {
         for (let yCoord of rangeToFill) {
           this.field[yCoord][xConst] += 1;
         }
-      }
-      if (y0 === y1) {
+      } else if (y0 === y1) {
         // Y is the same.
         let yConst = y0;
         // Draw a horizontal line between coords[0][0] (x0) and coords[1][0] (x1)
@@ -98,6 +100,29 @@ class Field extends Input {
         }
         for (let xCoord of rangeToFill) {
           this.field[yConst][xCoord] += 1;
+        }
+      } else {
+        // Line is diagonal... Need to figure this one out. 4 cases
+        if (x0 < x1) {
+          // horizontal line goes from left to right
+          let horDist = x1 - x0;
+          if (y0 < y1) {
+            // vertical line goes from up to down
+            let vertDist = y1 - y0;
+          } else if (y0 > y1) {
+            // vertical line goes from down to up
+            let vertDist = y0 - y1;
+          }
+        } else if (x0 > x1) {
+          // horizontal line goes right to left
+          let horDist = x0 - x1;
+          if (y0 < y1) {
+            // vertical line goes from up to down
+            let vertDist = y1 - y0;
+          } else if (y0 > y1) {
+            // vertical line goes from down to up
+            let vertDist = y0 - y1;
+          }
         }
       }
     }
@@ -115,5 +140,4 @@ class Field extends Input {
 }
 
 let field = new Field();
-console.log(field.field);
 console.log(field.numPointsGreaterThanOne);
