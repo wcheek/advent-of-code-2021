@@ -6,7 +6,7 @@ function syncReadFile(filename: string) {
 }
 
 class Input {
-  input: number[][][];
+  protected input: number[][][];
   protected filteredInput: number[][][];
   constructor() {
     this.input = this.getInput();
@@ -36,7 +36,7 @@ class Input {
 
 class Field extends Input {
   // the field is referenced as [y][x] whereas the input is [x][y]
-  field: number[][];
+  private field: number[][];
   numPointsGreaterThanOne: number;
 
   constructor() {
@@ -121,7 +121,7 @@ class Field extends Input {
             // Big to Small
             let vertDist = y0 - y1;
             domainToFill = this.getRangeToFill(y1, vertDist);
-            domainToFill = domainToFill.reverse()
+            domainToFill = domainToFill.reverse();
           }
         } else if (x0 > x1) {
           // right to left
@@ -139,7 +139,7 @@ class Field extends Input {
             // Big to small
             let vertDist = y0 - y1;
             domainToFill = this.getRangeToFill(y1, vertDist);
-            domainToFill = domainToFill.reverse()
+            domainToFill = domainToFill.reverse();
           }
         }
         // rangeToFill and domainToFill should have the same length.
