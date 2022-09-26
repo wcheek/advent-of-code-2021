@@ -22,9 +22,9 @@ class Fish {
   constructor(interval: number = 8) {
     this.interval = interval;
   }
-  liveAnotherDay() {
-    this.interval -= 1;
-  }
+  // liveAnotherDay() {
+  //   this.interval -= 1;
+  // }
 }
 
 class School extends Input {
@@ -40,20 +40,24 @@ class School extends Input {
     for (let int of this.input) {
       schoolOfFish.push(new Fish(int));
     }
+    // console.log(schoolOfFish)
     return schoolOfFish;
   }
 
   protected liveAndBreed() {
     for (let dayNum = 0; dayNum < 80; dayNum++) {
+      // console.log(this.schoolOfFish)
       let currentSchool = this.schoolOfFish;
       for (let fish of currentSchool) {
         if (fish.interval === 0) {
-          this.schoolOfFish.push(new Fish(8));
+          this.schoolOfFish.push(new Fish(9));
+
           fish.interval = 6;
         } else {
-          fish.liveAnotherDay();
+          fish.interval -= 1;
         }
       }
+      // console.log(this.schoolOfFish[2])
     }
   }
 }
