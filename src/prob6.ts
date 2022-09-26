@@ -13,7 +13,6 @@ class Input {
   private getInput(): number[] {
     let input = syncReadFile("../assets/prob6_input.txt");
     let inputArray = input.split(",").map(Number);
-    console.log(inputArray);
     return inputArray;
   }
 }
@@ -31,13 +30,14 @@ class School extends Input {
   schoolOfFish: Fish[];
   constructor() {
     super();
-    this.makeSchool();
-    this.schoolOfFish = [];
+    this.schoolOfFish = this.makeSchool();
   }
-  protected makeSchool() {
+  protected makeSchool(): Fish[] {
+    let schoolOfFish: Fish[] = [];
     for (let int of this.input) {
-      this.schoolOfFish.push(new Fish(int));
+      schoolOfFish.push(new Fish(int));
     }
+    return schoolOfFish;
   }
 }
 let school = new School();
