@@ -26,15 +26,16 @@ class Fish {
     this.interval -= 1;
   }
 }
+
 class School extends Input {
   schoolOfFish: Fish[];
   constructor() {
     super();
-    this.schoolOfFish = this.makeSchool();
-    this.liveAndBreed()
+    this.schoolOfFish = this.makeInitialSchool();
+    this.liveAndBreed();
   }
 
-  protected makeSchool(): Fish[] {
+  protected makeInitialSchool(): Fish[] {
     let schoolOfFish: Fish[] = [];
     for (let int of this.input) {
       schoolOfFish.push(new Fish(int));
@@ -44,10 +45,11 @@ class School extends Input {
 
   protected liveAndBreed() {
     for (let dayNum = 0; dayNum < 80; dayNum++) {
-      for (let fish of this.schoolOfFish) {
+      let currentSchool = this.schoolOfFish;
+      for (let fish of currentSchool) {
         if (fish.interval === 0) {
           this.schoolOfFish.push(new Fish(8));
-          fish.interval = 6
+          fish.interval = 6;
         } else {
           fish.liveAnotherDay();
         }
