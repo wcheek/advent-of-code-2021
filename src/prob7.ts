@@ -14,9 +14,10 @@ function getTotalFuel(uniqueVals: number[]) {
   let totalFuel: number[] = Array(uniqueVals.length).fill(0);
   for (let uniqueValInd in uniqueVals) {
     for (let ind in input) {
-      totalFuel[uniqueValInd] += Math.abs(
-        input[ind] - uniqueVals[uniqueValInd]
-      );
+      let distance = Math.abs(input[ind] - uniqueVals[uniqueValInd]);
+      let array = Array.from({ length: distance + 1 }, (v, i) => i);
+      let fuel = array.reduce((prev, cur) => prev + cur, 0);
+      totalFuel[uniqueValInd] += fuel;
     }
   }
   return totalFuel;
