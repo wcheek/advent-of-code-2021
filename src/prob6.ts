@@ -18,11 +18,11 @@ class Input {
 }
 
 class Fish {
-  private interval: number;
+  interval: number;
   constructor(interval: number = 8) {
     this.interval = interval;
   }
-  private liveAnotherDay() {
+  liveAnotherDay() {
     this.interval -= 1;
   }
 }
@@ -31,7 +31,9 @@ class School extends Input {
   constructor() {
     super();
     this.schoolOfFish = this.makeSchool();
+    this.liveAndBreed()
   }
+
   protected makeSchool(): Fish[] {
     let schoolOfFish: Fish[] = [];
     for (let int of this.input) {
@@ -39,6 +41,19 @@ class School extends Input {
     }
     return schoolOfFish;
   }
+
+  protected liveAndBreed() {
+    for (let dayNum = 0; dayNum < 80; dayNum++) {
+      for (let fish of this.schoolOfFish) {
+        if (fish.interval === 0) {
+          this.schoolOfFish.push(new Fish(8));
+          fish.interval = 6
+        } else {
+          fish.liveAnotherDay();
+        }
+      }
+    }
+  }
 }
 let school = new School();
-console.log(school.schoolOfFish);
+console.log(school.schoolOfFish.length);
