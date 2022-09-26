@@ -103,26 +103,49 @@ class Field extends Input {
         }
       } else {
         // Line is diagonal... Need to figure this one out. 4 cases
+        // all lines are 45*
+        let rangeToFill: number[] = [];
+        let domainToFill: number[] = [];
         if (x0 < x1) {
           // left to right
+          // Small to big
           let horDist = x1 - x0;
+          rangeToFill = this.getRangeToFill(x0, horDist);
           if (y0 < y1) {
             // left up to right down
+            // small to big
             let vertDist = y1 - y0;
+            domainToFill = this.getRangeToFill(y0, vertDist);
           } else if (y0 > y1) {
             // left down to right up
+            // Big to Small
             let vertDist = y0 - y1;
+            domainToFill = this.getRangeToFill(y1, vertDist);
+            domainToFill = domainToFill.reverse()
           }
         } else if (x0 > x1) {
           // right to left
+          // Big to small
           let horDist = x0 - x1;
+          rangeToFill = this.getRangeToFill(x1, horDist);
+          rangeToFill = rangeToFill.reverse();
           if (y0 < y1) {
             // right up to left down
+            // Small to big
             let vertDist = y1 - y0;
+            domainToFill = this.getRangeToFill(y0, vertDist);
           } else if (y0 > y1) {
             // right down to left up
+            // Big to small
             let vertDist = y0 - y1;
+            domainToFill = this.getRangeToFill(y1, vertDist);
+            domainToFill = domainToFill.reverse()
           }
+        }
+        // rangeToFill and domainToFill should have the same length.
+        // since the lines are all just 45*
+        for (let i = 0; i < rangeToFill.length; i++) {
+          this.field[domainToFill[i]][rangeToFill[i]] += 1;
         }
       }
     }
