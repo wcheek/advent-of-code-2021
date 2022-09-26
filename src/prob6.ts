@@ -45,7 +45,7 @@ class School extends Input {
   }
 
   protected liveAndBreed() {
-    for (let dayNum = 0; dayNum < 256; dayNum++) {
+    for (let dayNum = 0; dayNum < 80; dayNum++) {
       // console.log(this.schoolOfFish)
       let currentSchool = this.schoolOfFish;
       for (let fish of currentSchool) {
@@ -56,9 +56,10 @@ class School extends Input {
           fish.interval -= 1;
         }
       }
-      // console.log(this.schoolOfFish[2])
     }
   }
 }
 let school = new School();
 console.log(school.schoolOfFish.length);
+// Could optimize solution by not doing OO.
+// Just track number of fish at each stage. Moving on though.
