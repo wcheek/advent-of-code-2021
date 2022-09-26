@@ -104,23 +104,23 @@ class Field extends Input {
       } else {
         // Line is diagonal... Need to figure this one out. 4 cases
         if (x0 < x1) {
-          // horizontal line goes from left to right
+          // left to right
           let horDist = x1 - x0;
           if (y0 < y1) {
-            // vertical line goes from up to down
+            // left up to right down
             let vertDist = y1 - y0;
           } else if (y0 > y1) {
-            // vertical line goes from down to up
+            // left down to right up
             let vertDist = y0 - y1;
           }
         } else if (x0 > x1) {
-          // horizontal line goes right to left
+          // right to left
           let horDist = x0 - x1;
           if (y0 < y1) {
-            // vertical line goes from up to down
+            // right up to left down
             let vertDist = y1 - y0;
           } else if (y0 > y1) {
-            // vertical line goes from down to up
+            // right down to left up
             let vertDist = y0 - y1;
           }
         }
