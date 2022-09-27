@@ -38,5 +38,18 @@ let numbersInfo: InumbersInfo = {
 };
 
 let input = getInput();
-console.log(input)
 
+function countEasyNums(input: string[][][]): number {
+  let numEasyNums: number = 0;
+  for (let line of input) {
+    let fourDigitNums = line[1];
+    for (let num of fourDigitNums) {
+      if ([2, 4, 3, 7].includes(num.length)) {
+        numEasyNums += 1;
+      }
+    }
+  }
+  return numEasyNums;
+}
+
+console.log(countEasyNums(input));
